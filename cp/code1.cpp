@@ -37,13 +37,41 @@ void c_p_c()
 int32_t main()
 {
 	c_p_c();
-	int n; cin >> n;
-	cout << 3 * (n + 2) << "\n";
-
-	from(i, 3) {
-		from(j, n + 2) {
-			cout << i << " " << j << "\n";
+	w(t) {
+		//Enter your code here
+		string s; cin >> s;
+		int l = s.length();
+		stack<char> brac;
+		int possible = 1;
+		from(i, l) {
+			if (s[i] == ']') {
+				if (brac.empty())possible = 0;
+				else {
+					if (brac.top() == '[')brac.pop();
+					else possible = 0;
+				}
+			}
+			else if (s[i] == ')') {
+				if (brac.empty())possible = 0;
+				else {
+					if (brac.top() == '(')brac.pop();
+					else possible = 0;
+				}
+			}
+			else if (s[i] == '}') {
+				if (brac.empty())possible = 0;
+				else {
+					if (brac.top() == '{')brac.pop();
+					else possible = 0;
+				}
+			}
+			else {
+				brac.push(s[i]);
+			}
 		}
+		if (!brac.empty())possible = 0;
+		if (possible)cout << "YES\n";
+		else cout << "NO\n";
 	}
 
 
