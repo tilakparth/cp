@@ -66,6 +66,19 @@ void update(vi &tree, int s_start, int s_end, int pos, int value, int index) { /
 	tree[index] = min(tree[2 * index], tree[2 * index + 1]);
 	return;
 }
+void range_updates(vi &tree, int s_start, int s_end, int u_start, int u_end, int increment, int index) {
+	if (s_start > u_end || s_end < u_start)return; // No overlapping
+	if (s_start == s_end) {    // leaf node,one point in the update range
+		tree[index] += increment;
+		return;
+	}
+	// recursive case
+	int mid = (s_start + s_end) / 2;
+	range_updates(tree, s_start, mid, u_start, u_end, increment, 2 * index);
+	range_updates(tree, mid + 1, s_end, u_start, u_end, increment, 2 * index + 1);
+	tree[index] = min(tree[index * 2], tree[2 * index + 1]);
+	return ;
+}
 
 int32_t main()
 {
@@ -78,6 +91,7 @@ int32_t main()
 	buildTree(a, 0, n - 1, 1, tree);
 	// for (int i = 1; i <= 13; i++)cout << tree[i] << " ";
 	update(tree, 0, n - 1, 3, 5, 1);  // new array = {1,3,2,5,6,4}
+	range_updates(tree, 0, n - 1, 3, 5, 10, 1); // new array ={1,3,2,15,16,14}
 	w(t) {
 		int l, r; cin >> l >> r;
 		cout << query(tree, 0, n - 1, l, r, 1) << "\n";
